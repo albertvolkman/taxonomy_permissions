@@ -1,0 +1,13 @@
+<?php
+
+/*
+ * Implementation of hook_node_access().
+ */
+function taxonomy_permissions_node_access($node, $op, $account) {
+  if ($account->uid != 0 && is_object($node) && $node->type == 'dashboard') {
+    $user = user_load($account->uid);
+    if ($user->field_client['und'][0]['tid'] != $node->field_client['und'][0]['tid']) {
+      return NODE_ACCESS_DENY;
+    }
+  }
+}
